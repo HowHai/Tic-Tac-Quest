@@ -7,33 +7,13 @@
       <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.8/angular.min.js" type="text/javascript"></script>
     <script src="app.js" type="text/javascript"></script>
     <script src="maincontroller.js" type="text/javascript"></script>
-
-    <title></title>
+    <title>Conquest of the New World: Tic Tac Toe</title>
   </head>
+
   <body x-ng-controller="MainController">
-    <br />
     <div id="main">
     <div id="turn-box">{{statusBox}}</div>
       <div id="game-board">
-<!--         <div id="row-1">
-           <div class="territory" ng-repeat="territory in rowOne" ng-click='selectedTerritory(territory)' id="{{territory}}">
-            {{ territory }}
-          </div>
-        </div>
-
-        <div id="row-2">
-           <div class="territory" ng-repeat="territory in rowTwo" ng-click='selectedTerritory(territory)' id="{{territory}}">
-            {{ territory }}
-          </div>
-        </div>
-
-        <div id="row-3">
-          <div class="territory" ng-repeat="territory in rowThree" ng-click='selectedTerritory(territory)' id="{{territory}}">
-            {{ territory }}
-          </div>
-        </div>
-
- -->
         <div id="row{{row[0]}}" ng-repeat="row in gameArray">
           <div class="territory" ng-repeat="territory in row" id="{{territory}}" ng-click="selectedTerritory(territory)">
             {{territory}}
@@ -42,12 +22,10 @@
       </div>
       <!-- Menu -->
       <div id="menu">
-        <div id="play">Play</div>
-        <div id="reset">Restart</div>
+        <div id="play" ng-click='startGame()'>Play</div>
+        <div id="reset" ng-click='restartGame()'>Restart</div>
         <div id="undo">Undo</div>
       </div>
-
     </div>
-    <!-- FIXME: Get it to load when placed in <head> -->
   </body>
 </html>

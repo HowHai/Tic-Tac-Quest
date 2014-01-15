@@ -31,10 +31,6 @@ body {
   -webkit-transform:skewX(10deg);
 }
 
-#row-1, #row-2, #row-3 {
-  margin: 2px 0 0 0;
-}
-
 #row0, #row3, #row6{
   margin: 2px 0 0 0;
 }
@@ -57,14 +53,6 @@ body {
   font-size: 100px;
   text-align: center;
   font-family: 'VT323', cursive;
-}
-
-#row-2 .territory {
-  width: 236px;
-}
-
-#row-3 .territory {
-  width: 250px;
 }
 
 #menu {
