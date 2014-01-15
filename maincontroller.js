@@ -1,4 +1,9 @@
 app.controller("MainController", function($scope){
+  // define Array.last()
+  Array.prototype.last = function(){
+    return this[this.length -1];
+  }
+
   var playerOneMoves = [];
   var playerTwoMoves = [];
   var gameBoard = [];
@@ -33,6 +38,37 @@ app.controller("MainController", function($scope){
     for (var i = 0; i < boardArray.length; i++){
       var getTerritory = $("#" + i);
       getTerritory.html(i);
+    }
+  }
+
+  $scope.undoMove = function(){
+    var lastMove = [gameBoard.last()];
+    if (!gameOver)
+    {
+      // Remove last value of gameBoard
+      gameBoard = gameBoard.filter(function(value){
+        return lastMove.indexOf(value) == -1;
+      });
+
+      playerOneMoves = playerOneMoves.filter(function(value){
+        return lastMove.indexOf(value) == -1;
+      })
+
+      playerTwoMoves = playerTwoMoves.filter(function(value){
+        return lastMove.indexOf(value) == -1;
+      })
+
+      // Replace last territory with number
+      $("#" + lastMove[0]).html(lastMove[0]);
+
+      if (gameBoard % 2 == 0 && gameBoard.length != 0)
+        displayStatus("Holland's Turn");
+      else
+        displayStatus("France's Turn");
+
+      console.log(lastMove);
+      console.log(gameBoard);
+      console.log(playerOneMoves);
     }
   }
 
