@@ -1,0 +1,69 @@
+#turn-box {
+  width: 462px;
+  height: 40px;
+  background: blue;
+  border: 1px solid black;
+  color: white;
+  font-size: 35px;
+  text-align: center;
+  margin: 0 auto;
+}
+
+#main {
+  border: 1px solid black;
+  width: 1200px;
+  height: 900px;
+  background: url("game-map.png");
+  margin: 0 auto;
+}
+
+#game-board {
+  border: 2px solid red; /* delete after */
+  width: 770px;
+  margin: 160px 0 0 200px;
+  -webkit-transform:skewX(10deg);
+}
+
+#row-1, #row-2, #row-3 {
+  margin: 2px 0 0 0;
+}
+
+.territory {
+  cursor: url("crosshair.png"), auto;
+  border: 2px solid black; /* delete after */
+  width: 220px;
+  height: 117px;
+  display: inline-block;
+  color: white;
+  font-size: 100px;
+  text-align: center;
+  font-family: 'VT323', cursive;
+}
+
+#row-2 .territory {
+  width: 236px;
+}
+
+#row-3 .territory {
+  width: 250px;
+}
+
+#menu {
+  width: 145px;
+  height: 115px;
+  border: 3px solid yellow;
+  float: right;
+  margin: -239px 38px 0 0;
+  text-align: center;
+  font-family: 'VT323', cursive;
+  font-size: 22px;
+}
+
+#play, #reset, #undo {
+  background: #64648c;
+  width: 112px;
+  height: 28px;
+  border: 1px solid red;
+  margin: 6px auto 6px auto;
+  border-radius: 5px;
+}
