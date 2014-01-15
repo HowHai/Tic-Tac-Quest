@@ -1,3 +1,10 @@
+/* Prevents user from selecting page*/
+body {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
 #turn-box {
   width: 462px;
   height: 40px;
@@ -26,6 +33,18 @@
 
 #row-1, #row-2, #row-3 {
   margin: 2px 0 0 0;
+}
+
+#row0, #row3, #row6{
+  margin: 2px 0 0 0;
+}
+
+#row3 .territory {
+  width: 236px;
+}
+
+#row6 .territory {
+  width: 250px;
 }
 
 .territory {

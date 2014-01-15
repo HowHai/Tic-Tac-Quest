@@ -15,21 +15,28 @@
     <div id="main">
     <div id="turn-box">{{statusBox}}</div>
       <div id="game-board">
-        <div id="row-1">
-           <div class="territory" ng-repeat="territory in rowOne" ng-click='selectedDiv(territory)' id="{{territory}}">
+<!--         <div id="row-1">
+           <div class="territory" ng-repeat="territory in rowOne" ng-click='selectedTerritory(territory)' id="{{territory}}">
             {{ territory }}
           </div>
         </div>
 
         <div id="row-2">
-           <div class="territory" ng-repeat="territory in rowTwo" ng-click='selectedDiv(territory)' id="{{territory}}">
+           <div class="territory" ng-repeat="territory in rowTwo" ng-click='selectedTerritory(territory)' id="{{territory}}">
             {{ territory }}
           </div>
         </div>
 
         <div id="row-3">
-          <div class="territory" ng-repeat="territory in rowThree" ng-click='selectedDiv(territory)' id="{{territory}}">
+          <div class="territory" ng-repeat="territory in rowThree" ng-click='selectedTerritory(territory)' id="{{territory}}">
             {{ territory }}
+          </div>
+        </div>
+
+ -->
+        <div id="row{{row[0]}}" ng-repeat="row in gameArray">
+          <div class="territory" ng-repeat="territory in row" id="{{territory}}" ng-click="selectedTerritory(territory)">
+            {{territory}}
           </div>
         </div>
       </div>

@@ -4,9 +4,7 @@ app.controller("MainController", function($scope){
   var gameBoard = [];
   var gameOver = false;
   $scope.statusBox = "Click start to play!";
-  $scope.rowOne = [0,1,2];
-  $scope.rowTwo = [3,4,5];
-  $scope.rowThree = [6,7,8];
+  $scope.gameArray = [[0,1,2],[3,4,5],[6,7,8]];
 
   var winCondition = [
                           [0,1,2], [3,4,5], [6,7,8],
@@ -18,7 +16,7 @@ app.controller("MainController", function($scope){
     $scope.statusBox = status;
   }
 
-  $scope.selectedDiv = function(selected){
+  $scope.selectedTerritory = function(selected){
     var getDiv = $("#" + selected);
     var occupiedTerritory = isNaN(getDiv.html());
     var XorO = gameBoard.length % 2 == 0 ? "X" : "O";
