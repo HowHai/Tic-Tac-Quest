@@ -43,6 +43,11 @@ app.controller("MainController", function($scope){
 
   $scope.undoMove = function(){
     var lastMove = [gameBoard.last()];
+    function removeLastMove(array){
+      gameBoard = gameBoard.filter(function(value){
+        return lastMove.indexOf(value) == -1;
+      });
+    }
     if (!gameOver)
     {
       // Remove last value of gameBoard
