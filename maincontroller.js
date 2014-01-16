@@ -43,14 +43,9 @@ app.controller("MainController", function($scope){
 
   $scope.undoMove = function(){
     var lastMove = [gameBoard.last()];
-    function removeLastMove(array){
-      gameBoard = gameBoard.filter(function(value){
-        return lastMove.indexOf(value) == -1;
-      });
-    }
+
     if (!gameOver)
     {
-      // Remove last value of gameBoard
       gameBoard = gameBoard.filter(function(value){
         return lastMove.indexOf(value) == -1;
       });
@@ -66,10 +61,10 @@ app.controller("MainController", function($scope){
       // Replace last territory with number
       $("#" + lastMove[0]).html(lastMove[0]);
 
-      if (gameBoard % 2 == 0 && gameBoard.length != 0)
-        displayStatus("Holland's Turn");
-      else
+      if (gameBoard.length % 2 == 0)
         displayStatus("France's Turn");
+      else if (gameBoard.length != 0)
+        displayStatus("Holland's Turn");
 
       console.log(lastMove);
       console.log(gameBoard);
@@ -112,6 +107,9 @@ app.controller("MainController", function($scope){
         }
     }
     if (playerMoves.length == 5 && gameOver == false)
+    {
       displayStatus("War is hell... stalemate!");
+      gameOver = true;
+    }
   }
 });
