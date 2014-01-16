@@ -112,4 +112,7 @@ app.controller("MainController", function($scope){
       gameOver = true;
     }
   }
+
+
+  // AI MADNESS
 });
