@@ -5,6 +5,8 @@ body {
   -ms-user-select: none;
   user-select: none;
 }
+
+
 #turn-box {
   width: 462px;
   height: 40px;
@@ -25,7 +27,7 @@ body {
 }
 
 #game-board {
-  border: 2px solid red; /* delete after */
+  border: 2px solid red;
   width: 770px;
   margin: 160px 0 0 200px;
   -webkit-transform:skewX(10deg);
@@ -49,6 +51,13 @@ body {
   width: 220px;
   height: 117px;
   display: inline-block;
+  color: transparent;
+  font-size: 100px;
+  text-align: center;
+  font-family: 'VT323', cursive;
+}
+
+span {
   color: white;
   font-size: 100px;
   text-align: center;

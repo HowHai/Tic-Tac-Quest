@@ -83,7 +83,7 @@ app.controller("MainController", function($scope){
     function playerAction(player, turn){
       player.push(selected);
       gameBoard.push(selected);
-      getDiv.html(XorO);
+      getDiv.html("<span>" + XorO + "</span>");
       displayStatus(turn);
     }
 
@@ -97,7 +97,7 @@ app.controller("MainController", function($scope){
     //   playerAction(playerTwoMoves, "France's Turn");
 
     winCheck(winCondition, playerOneMoves, "France won!");
-    winCheck(winCondition, playerTwoMoves, "Holland won!");
+    // winCheck(winCondition, playerTwoMoves, "Holland won!");
   }
 
   function winCheck(winCondition, playerMoves, message) {
@@ -126,58 +126,33 @@ app.controller("MainController", function($scope){
     return isNaN(getTerritory);
   }
   // AI MADNESSSSS
+  // TODO: fix bot's third move when player
   // Calculate bot's move by using player, bot, and windCondition
-  function calculateBotMove(player, bot){
+  function botMoveChecker(winCondition, player, message){
     for (var i = 0; i < winCondition.length; i++)
     {
-      var botWinningComb = bot.filter(function(value){
-        return winCondition[i].indexOf(value) != -1;
+      var winningComb = winCondition[i].filter(function(value){
+        return player.indexOf(value) != -1;
       })
 
       var winningMove = winCondition[i].filter(function(value){
-        return bot.indexOf(value) == -1;
+        return player.indexOf(value) == -1;
       })
 
-      if (botWinningComb.length == 2 && !occupiedTerritory(winningMove[0]))
+      if (winningComb.length == 2 && !occupiedTerritory(winningMove))
       {
-        fatalBlow = winningMove;
-        console.log("winning moveee");
+        return fatalBlow = winningMove;
         break;
       }
     }
+  }
+
+  function calculateBotMove(player, bot){
+    // Make winning move if available
+    botMoveChecker(winCondition, bot);
 
     if (fatalBlow.length == 0)
-    {
-      for (var i = 0; i < winCondition.length; i++)
-      {
-        // Check player's current moves for a 2/3 winning comb.
-        var playerWinningComb = player.filter(function(value) {
-          return winCondition[i].indexOf(value) != -1;
-        })
-
-        if (player.length >= 2)
-        {
-          var availableTerritory = winCondition[i].filter(function(value) {
-            return player.indexOf(value) == -1;
-          })
-
-          if (availableTerritory.length > 1) { continue; }
-        }
-        // Reaction to bad/odd move
-        if (player.length == 2 && playerWinningComb.length == 2 && occupiedTerritory(availableTerritory[0]))
-        {
-          fatalBlow = occupiedTerritory(0) ? [2] : [8];
-          break;
-        }
-
-        if (playerWinningComb.length == 2 && !occupiedTerritory(availableTerritory[0]))
-        {
-          fatalBlow = availableTerritory;
-          console.log(availableTerritory);
-          break;
-        }
-      }
-    }
+      botMoveChecker(winCondition, player);
   }
 
 
@@ -188,7 +163,7 @@ app.controller("MainController", function($scope){
     var randMove = secondMoveArray[Math.floor(Math.random() * secondMoveArray.length)];
     if (gameBoard.length == 1 && playerOneMoves[0] == 4)
     {
-      $("#" + randMove).html("O");
+      $("#" + randMove).html("<span>O</span>");
       botMoves.push(randMove);
       gameBoard.push(randMove);
       displayStatus("France's Turn");
@@ -196,7 +171,7 @@ app.controller("MainController", function($scope){
     }
     else if (gameBoard.length == 1 && playerOneMoves[0] != 4)
     {
-      $("#4").html("O");
+      $("#4").html("<span>O</span>");
       botMoves.push(4);
       gameBoard.push(4);
       displayStatus("France's Turn");
@@ -208,7 +183,7 @@ app.controller("MainController", function($scope){
       calculateBotMove(playerOneMoves, botMoves);
       if (fatalBlow.length == 1 && !isNaN(fatalBlow))
       {
-        $("#" + fatalBlow[0]).html("O");
+        $("#" + fatalBlow[0]).html("<span>O</span>");
         botMoves.push(fatalBlow[0]);
         gameBoard.push(fatalBlow[0]);
         displayStatus("France's Turn");
