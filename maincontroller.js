@@ -12,7 +12,7 @@ app.controller("MainController", function($scope){
   var gameOver = true;
   var botMode = false;
   var playerMode = false;
-  $scope.statusBox = "Main Menu";
+
   $scope.gameArray = [[0,1,2],[3,4,5],[6,7,8]];
 
   var winCondition = [
@@ -22,22 +22,22 @@ app.controller("MainController", function($scope){
                      ];
 
   function displayStatus(status){
-    $scope.statusBox = status;
-  }
+    $("#turn-box").html(status);
+  };
 
   $scope.playerMode = function(){
     gameOver = false;
     playerMode = true;
     $("#message-box").hide();
     displayStatus("France's Turn");
-  }
+  };
 
   $scope.botMode = function(){
     gameOver = false;
     botMode = true;
     $("#message-box").hide();
     displayStatus("France's Turn");
-  }
+  };
 
   $scope.mainMenu = function(){
     gameOver = true;
@@ -46,7 +46,7 @@ app.controller("MainController", function($scope){
     $("#message-box").show();
     displayStatus("Main Menu");
     $scope.restartGame();
-  }
+  };
 
   $scope.restartGame = function(){
     displayStatus("France's Turn");
@@ -62,7 +62,7 @@ app.controller("MainController", function($scope){
       var getTerritory = $("#" + i);
       getTerritory.html(i);
     }
-  }
+  };
 
   $scope.undoMove = function(){
     var lastMove = [gameBoard.last()];
@@ -93,7 +93,7 @@ app.controller("MainController", function($scope){
       console.log(gameBoard);
       console.log(playerOneMoves);
     }
-  }
+  };
 
   $scope.selectedTerritory = function(selected){
     var getDiv = $("#" + selected);
@@ -105,7 +105,7 @@ app.controller("MainController", function($scope){
       gameBoard.push(selected);
       getDiv.html("<span>" + XorO + "</span>");
       displayStatus(turn);
-    }
+    };
 
     if (XorO == 'X' && !occupiedTerritory && !gameOver)
     {
@@ -122,8 +122,7 @@ app.controller("MainController", function($scope){
 
     winCheck(winCondition, playerOneMoves, "France won!");
     winCheck(winCondition, playerTwoMoves, "Holland won!");
-    winCheck(winCondition, botMoves, "Holland won!");
-  }
+  };
 
   function winCheck(winCondition, playerMoves, message) {
     for (var i = 0; i < winCondition.length; i++){
@@ -143,13 +142,13 @@ app.controller("MainController", function($scope){
       displayStatus("War is hell... stalemate!");
       gameOver = true;
     }
-  }
+  };
 
   // Return true if territory is occupied
   function occupiedTerritory(territory){
     var getTerritory = $("#" + territory).html();
     return isNaN(getTerritory);
-  }
+  };
   // AI MADNESSSSS
   // TODO: fix bot's third move when player
   // Calculate bot's move by using player, bot, and windCondition
@@ -170,7 +169,7 @@ app.controller("MainController", function($scope){
         break;
       }
     }
-  }
+  };
 
   function calculateBotMove(player, bot){
     // Make winning move if available
@@ -178,7 +177,7 @@ app.controller("MainController", function($scope){
 
     if (fatalBlow.length == 0)
       botMoveChecker(winCondition, player);
-  }
+  };
 
   // AI MADNESS
   function botAI(){
@@ -190,8 +189,8 @@ app.controller("MainController", function($scope){
       $("#" + randMove).html("<span>O</span>");
       botMoves.push(randMove);
       gameBoard.push(randMove);
+      $("#turn-box").html("Haiii");
       displayStatus("France's Turn");
-      console.log("This is working!");
     }
     else if (gameBoard.length == 1 && playerOneMoves[0] != 4)
     {
@@ -199,10 +198,8 @@ app.controller("MainController", function($scope){
       botMoves.push(4);
       gameBoard.push(4);
       displayStatus("France's Turn");
-      console.log(botMoves);
     }
-
-    if (gameBoard.length >= 3)
+    else if (gameBoard.length >= 3)
     {
       calculateBotMove(playerOneMoves, botMoves);
       if (fatalBlow.length == 1 && !isNaN(fatalBlow))
@@ -212,8 +209,11 @@ app.controller("MainController", function($scope){
         gameBoard.push(fatalBlow[0]);
         displayStatus("France's Turn");
         fatalBlow = [];
-        console.log(botMoves);
       }
     }
-  }
+    else
+      alert("Hai");
+
+    winCheck(winCondition, botMoves, "Holland won!");
+  };
 });

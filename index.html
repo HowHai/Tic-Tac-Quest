@@ -19,7 +19,7 @@
       <div id="pvc" class="button" x-ng-click="botMode()">Player vs. AI</div>
       <div id="rpg" class="button">Adventure Mode</div>
     </div>
-    <div id="turn-box">{{statusBox}}</div>
+    <div id="turn-box">Main Menu</div>
       <div id="game-board">
         <div id="row{{row[0]}}" ng-repeat="row in gameArray">
           <div class="territory" ng-repeat="territory in row" id="{{territory}}" ng-click="selectedTerritory(territory)">
