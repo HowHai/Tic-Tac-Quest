@@ -12,6 +12,13 @@
 
   <body x-ng-controller="MainController">
     <div id="main">
+    <div id="message-box" ng-hide="false">
+      <h3>Welcome!</h3>
+      <p>Choose a game mode</p>
+      <div id="pvp" class="button" x-ng-click="startGame(playerModeOn)">Player vs. Player</div>
+      <div id="pvc" class="button" x-ng-click="startGame(botModeOn)">Player vs. AI</div>
+      <div id="rpg" class="button">Adventure Mode</div>
+    </div>
     <div id="turn-box">{{statusBox}}</div>
       <div id="game-board">
         <div id="row{{row[0]}}" ng-repeat="row in gameArray">

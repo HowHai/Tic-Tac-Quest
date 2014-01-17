@@ -10,7 +10,9 @@ app.controller("MainController", function($scope){
   var botMoves = [];
   var fatalBlow = [];
   var gameOver = true;
-  $scope.statusBox = "Click start to play!";
+  var botModeOn = false;
+  var playerModeOn = false;
+  $scope.statusBox = "Main Menu";
   $scope.gameArray = [[0,1,2],[3,4,5],[6,7,8]];
 
   var winCondition = [
@@ -23,8 +25,10 @@ app.controller("MainController", function($scope){
     $scope.statusBox = status;
   }
 
-  $scope.startGame = function(){
+  $scope.startGame = function(mode){
     gameOver = false;
+    mode = true;
+    $("#message-box").hide();
     displayStatus("France's Turn");
   }
 
@@ -89,15 +93,15 @@ app.controller("MainController", function($scope){
 
     if (XorO == 'X' && !occupiedTerritory && !gameOver)
     {
-      playerAction(playerOneMoves, "Holland's Turn");
-      botAI(); // Remove this and uncomment 96-97 to resume player vs player
+      playerAction(playerOneMoves, "Holland is thinking...");
+      if (botModeOn) setTimeout(function() { botAI(); }, 2000);
+      // Remove this and uncomment 96-97 to resume player vs player
     }
-    // BOT MADNESS
-    // else if (!occupiedTerritory && !gameOver)
-    //   playerAction(playerTwoMoves, "France's Turn");
+    else if (!occupiedTerritory && !gameOver && playerModeOn)
+      playerAction(playerTwoMoves, "France's Turn");
 
     winCheck(winCondition, playerOneMoves, "France won!");
-    // winCheck(winCondition, playerTwoMoves, "Holland won!");
+    winCheck(winCondition, playerTwoMoves, "Holland won!");
   }
 
   function winCheck(winCondition, playerMoves, message) {
@@ -128,7 +132,7 @@ app.controller("MainController", function($scope){
   // AI MADNESSSSS
   // TODO: fix bot's third move when player
   // Calculate bot's move by using player, bot, and windCondition
-  function botMoveChecker(winCondition, player, message){
+  function botMoveChecker(winCondition, player){
     for (var i = 0; i < winCondition.length; i++)
     {
       var winningComb = winCondition[i].filter(function(value){
@@ -154,7 +158,6 @@ app.controller("MainController", function($scope){
     if (fatalBlow.length == 0)
       botMoveChecker(winCondition, player);
   }
-
 
   // AI MADNESS
   function botAI(){
@@ -190,8 +193,6 @@ app.controller("MainController", function($scope){
         fatalBlow = [];
         console.log(botMoves);
       }
-      else
-        console.log("Blah");
     }
     winCheck(winCondition, botMoves, "Holland won!");
   }

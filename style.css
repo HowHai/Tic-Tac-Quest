@@ -4,8 +4,47 @@ body {
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
+  background-color: grey;
 }
 
+#message-box {
+  background: url("messagebox3.png") no-repeat;
+  width: 575px;
+  height: 200px;
+  position: absolute;
+  border: 2px solid black;
+  margin: 230px 0 0 305px;
+  z-index: 1;
+  text-align: center;
+  font-family: 'VT323', cursive;
+  font-size: 22px;
+}
+
+h3 {
+  font-size: 35px;
+}
+
+#pvp, #pvc, #rpg {
+  background: #65648c;
+  font-size: 16px;
+}
+
+.button {
+  display: inline-block;
+  outline: none;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  font-family: 'VT323', cursive;
+  padding: .5em 2em .55em;
+  text-shadow: 0 1px 1px rgba(0,0,0, .3);
+  border-radius: .5em;
+  box-shadow: 0 1px 2px rgba(0,0,0, .2);
+  -webkit-border-radius: .5em;
+  -moz-border-radius: .5em;
+  -webkit-box-shadow: 0 1px 2px rgba(0,0,0, .2);
+  -moz-box-shadow: 0 1px 2px rgba(0,0,0, .2);
+}
 
 #turn-box {
   width: 462px;
@@ -16,9 +55,17 @@ body {
   font-size: 35px;
   text-align: center;
   margin: 0 auto;
+  font-family: 'VT323', cursive;
+  border-radius: .5em;
+  box-shadow: 0 1px 2px rgba(0,0,0, .2);
+  -webkit-border-radius: .5em;
+  -moz-border-radius: .5em;
+  -webkit-box-shadow: 0 1px 2px rgba(0,0,0, .2);
+  -moz-box-shadow: 0 1px 2px rgba(0,0,0, .2);
 }
 
 #main {
+  position: relative;
   border: 1px solid black;
   width: 1200px;
   height: 900px;
@@ -27,7 +74,7 @@ body {
 }
 
 #game-board {
-  border: 2px solid red;
+  border: 2px solid transparent;
   width: 770px;
   margin: 160px 0 0 200px;
   -webkit-transform:skewX(10deg);
@@ -47,7 +94,7 @@ body {
 
 .territory {
   cursor: url("crosshair.png"), auto;
-  border: 2px solid black; /* delete after */
+  border: 2px solid transparent; /* delete after */
   width: 220px;
   height: 117px;
   display: inline-block;
@@ -65,21 +112,29 @@ span {
 }
 
 #menu {
-  width: 145px;
-  height: 115px;
-  border: 3px solid yellow;
+  width: 146px;
+  height: 118px;
+  border: 1px solid black;
   float: right;
   margin: -239px 38px 0 0;
   text-align: center;
   font-family: 'VT323', cursive;
-  font-size: 22px;
+  font-size: 18px;
 }
 
 #play, #reset, #undo {
+  cursor: pointer;
   background: #64648c;
   width: 112px;
   height: 28px;
-  border: 1px solid red;
+  border: 1px solid transparent;
   margin: 6px auto 6px auto;
   border-radius: 5px;
+  text-shadow: 0 1px 1px rgba(0,0,0, .3);
+  border-radius: .5em;
+  box-shadow: 0 1px 2px rgba(0,0,0, .2);
+  -webkit-border-radius: .5em;
+  -moz-border-radius: .5em;
+  -webkit-box-shadow: 0 1px 2px rgba(0,0,0, .2);
+  -moz-box-shadow: 0 1px 2px rgba(0,0,0, .2);
 }
