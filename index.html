@@ -12,11 +12,11 @@
 
   <body x-ng-controller="MainController">
     <div id="main">
-    <div id="message-box" ng-hide="false">
+    <div id="message-box">
       <h3>Welcome!</h3>
       <p>Choose a game mode</p>
-      <div id="pvp" class="button" x-ng-click="startGame(playerModeOn)">Player vs. Player</div>
-      <div id="pvc" class="button" x-ng-click="startGame(botModeOn)">Player vs. AI</div>
+      <div id="pvp" class="button" x-ng-click="playerMode()">Player vs. Player</div>
+      <div id="pvc" class="button" x-ng-click="botMode()">Player vs. AI</div>
       <div id="rpg" class="button">Adventure Mode</div>
     </div>
     <div id="turn-box">{{statusBox}}</div>
@@ -29,9 +29,9 @@
       </div>
       <!-- Menu -->
       <div id="menu">
-        <div id="play" ng-click='startGame()'>Play</div>
-        <div id="reset" ng-click='restartGame()'>Restart</div>
-        <div id="undo" ng-click='undoMove()'>Undo</div>
+        <div id="play" x-ng-click="mainMenu()">Main Menu</div>
+        <div id="reset" x-ng-click='restartGame()'>Restart</div>
+        <div id="undo" x-ng-click='undoMove()'>Undo</div>
       </div>
     </div>
   </body>

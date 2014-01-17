@@ -10,8 +10,8 @@ app.controller("MainController", function($scope){
   var botMoves = [];
   var fatalBlow = [];
   var gameOver = true;
-  var botModeOn = false;
-  var playerModeOn = false;
+  var botMode = false;
+  var playerMode = false;
   $scope.statusBox = "Main Menu";
   $scope.gameArray = [[0,1,2],[3,4,5],[6,7,8]];
 
@@ -25,11 +25,27 @@ app.controller("MainController", function($scope){
     $scope.statusBox = status;
   }
 
-  $scope.startGame = function(mode){
+  $scope.playerMode = function(){
     gameOver = false;
-    mode = true;
+    playerMode = true;
     $("#message-box").hide();
     displayStatus("France's Turn");
+  }
+
+  $scope.botMode = function(){
+    gameOver = false;
+    botMode = true;
+    $("#message-box").hide();
+    displayStatus("France's Turn");
+  }
+
+  $scope.mainMenu = function(){
+    gameOver = true;
+    botMode = false;
+    playerMode = false;
+    $("#message-box").show();
+    displayStatus("Main Menu");
+    $scope.restartGame();
   }
 
   $scope.restartGame = function(){
@@ -93,15 +109,20 @@ app.controller("MainController", function($scope){
 
     if (XorO == 'X' && !occupiedTerritory && !gameOver)
     {
-      playerAction(playerOneMoves, "Holland is thinking...");
-      if (botModeOn) setTimeout(function() { botAI(); }, 2000);
+      playerAction(playerOneMoves, "Holland's Turn");
+      if (botMode)
+      {
+        displayStatus("Holland is thinking...");
+        setTimeout(function() { botAI(); }, 2000);
+      }
       // Remove this and uncomment 96-97 to resume player vs player
     }
-    else if (!occupiedTerritory && !gameOver && playerModeOn)
+    else if (!occupiedTerritory && !gameOver && playerMode)
       playerAction(playerTwoMoves, "France's Turn");
 
     winCheck(winCondition, playerOneMoves, "France won!");
     winCheck(winCondition, playerTwoMoves, "Holland won!");
+    winCheck(winCondition, botMoves, "Holland won!");
   }
 
   function winCheck(winCondition, playerMoves, message) {
@@ -170,7 +191,7 @@ app.controller("MainController", function($scope){
       botMoves.push(randMove);
       gameBoard.push(randMove);
       displayStatus("France's Turn");
-      console.log(botMoves);
+      console.log("This is working!");
     }
     else if (gameBoard.length == 1 && playerOneMoves[0] != 4)
     {
@@ -194,6 +215,5 @@ app.controller("MainController", function($scope){
         console.log(botMoves);
       }
     }
-    winCheck(winCondition, botMoves, "Holland won!");
   }
 });
