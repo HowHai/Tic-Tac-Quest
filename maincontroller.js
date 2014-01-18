@@ -152,7 +152,7 @@ app.controller("MainController", function($scope){
   // AI MADNESSSSS
   // TODO: fix bot's third move when player
   // Calculate bot's move by using player, bot, and windCondition
-  function botMoveChecker(winCondition, player){
+  function botMoveChecker(winCondition, player, decision){
     for (var i = 0; i < winCondition.length; i++)
     {
       var winningComb = winCondition[i].filter(function(value){
@@ -166,7 +166,30 @@ app.controller("MainController", function($scope){
       if (winningComb.length == 2 && !occupiedTerritory(winningMove))
       {
         return fatalBlow = winningMove;
+        console.log("sad face");
         break;
+      }
+
+      if (decision && winningComb.length == 1)
+      {
+        var testV = Math.abs(botMoves.last() - winningMove[0]);
+        var testV2 = Math.abs(botMoves.last() - winningMove[1]);
+        console.log("winningMove:" + winningMove);
+        var bestMove = Math.max(testV, testV2);
+        if (bestMove == testV)
+        {
+          if (!occupiedTerritory(winningMove[0]))
+            var bestMoveEver = winningMove[0];
+            fatalBlow = bestMoveEver;
+            break;
+        }
+        else if (!occupiedTerritory(winningMove[1]))
+        {
+           var bestMoveEver = winningMove[1];
+           fatalBlow = bestMoveEver;
+           break;
+        }
+        // console.log("This ran!");
       }
     }
   };
@@ -184,6 +207,7 @@ app.controller("MainController", function($scope){
     // Get random number from [0,2,6,8]
     var secondMoveArray = [0,2,6,8];
     var randMove = secondMoveArray[Math.floor(Math.random() * secondMoveArray.length)];
+
     if (gameBoard.length == 1 && playerOneMoves[0] == 4)
     {
       $("#" + randMove).html("<span>O</span>");
@@ -210,10 +234,18 @@ app.controller("MainController", function($scope){
         displayStatus("France's Turn");
         fatalBlow = [];
       }
+      else
+      {
+        botMoveChecker(winCondition, botMoves, true);
+        $("#" + fatalBlow).html("<span>O</span>");
+        botMoves.push(fatalBlow);
+        gameBoard.push(fatalBlow);
+        displayStatus("france's Turn");
+        // console.log("This is running!");
+        // console.log(fatalBlow);
+        fatalBlow = [];
+      }
     }
-    else
-      alert("Hai");
-
     winCheck(winCondition, botMoves, "Holland won!");
   };
 });
