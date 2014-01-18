@@ -179,14 +179,18 @@ app.controller("MainController", function($scope){
         if (bestMove == testV)
         {
           if (!occupiedTerritory(winningMove[0]))
+          {
             var bestMoveEver = winningMove[0];
             fatalBlow = bestMoveEver;
+            console.log(winningMove[0]);
             break;
+          }
         }
         else if (!occupiedTerritory(winningMove[1]))
         {
            var bestMoveEver = winningMove[1];
            fatalBlow = bestMoveEver;
+           console.log(fatalBlow);
            break;
         }
         // console.log("This ran!");
