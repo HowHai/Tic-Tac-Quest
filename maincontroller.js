@@ -1,4 +1,8 @@
-app.controller("MainController", function($scope){
+app.controller("MainController", function($scope, $firebase){
+  // https://burning-fire-9970.firebaseio.com/
+
+// var ref = new FireBase("https://burning-fire-9970.firebaseio.com/");
+
   // define Array.last()
   Array.prototype.last = function(){
     return this[this.length -1];
@@ -174,9 +178,10 @@ app.controller("MainController", function($scope){
       {
         var testV = Math.abs(botMoves.last() - winningMove[0]);
         var testV2 = Math.abs(botMoves.last() - winningMove[1]);
-        console.log("winningMove:" + winningMove);
+        console.log("winningMove: " + winningMove);
+        console.log("WinningComb: " + winningComb);
         var bestMove = Math.max(testV, testV2);
-        if (bestMove == testV)
+        if (bestMove == testV && !occupiedTerritory(winningComb))
         {
           if (!occupiedTerritory(winningMove[0]))
           {
@@ -186,7 +191,7 @@ app.controller("MainController", function($scope){
             break;
           }
         }
-        else if (!occupiedTerritory(winningMove[1]))
+        else if (!occupiedTerritory(winningMove[1]) && occupiedTerritory(winningComb))
         {
            var bestMoveEver = winningMove[1];
            fatalBlow = bestMoveEver;
