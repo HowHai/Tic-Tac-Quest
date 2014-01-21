@@ -44,8 +44,8 @@ app.controller("MainController", function($scope, $firebase){
     botMode = false;
     playerMode = false;
     $("#message-box").show();
-    displayStatus("Main Menu");
     $scope.restartGame();
+    displayStatus("Main Menu");
   };
 
   $scope.restartGame = function(){
@@ -119,7 +119,6 @@ app.controller("MainController", function($scope, $firebase){
         // setTimeout(function() { botAI(); }, 2000);
         botAI();
       }
-      // Remove this and uncomment 96-97 to resume player vs player
     }
     else if (!areaTaken && !gameOver && playerMode)
       playerAction(playerTwoMoves, "France's Turn");
@@ -150,7 +149,6 @@ app.controller("MainController", function($scope, $firebase){
   };
 
 
-  // AI MADNESSSSS
   // TODO: fix bot's third move when player
   // Calculate bot's move by using player, bot, and windCondition
   function botMoveChecker(winCondition, player, decision){
@@ -174,15 +172,8 @@ app.controller("MainController", function($scope, $firebase){
       if (decision && winningComb.length == 1)
       {
         var testV = Math.abs(botMoves.last() - winningMove[0]);
-        console.log("testV: " + testV);
         var testV2 = Math.abs(botMoves.last() - winningMove[1]);
-        console.log("testV2: " + testV2);
-        console.log("Last Move: " + botMoves.last());
-        console.log("winningMove: " + winningMove);
-        console.log("WinningComb: " + winningComb);
-
         var moveToTake = testV > testV2 ? winningMove[0] : winningMove[1];
-        console.log("MoveToTake: " + moveToTake);
 
         if (areaTaken(winningComb) && !areaTaken(winningMove[0]) && !areaTaken(winningMove[1]))
         {
@@ -204,7 +195,6 @@ app.controller("MainController", function($scope, $firebase){
       botMoveChecker(winCondition, player);
   };
 
-  // AI MADNESS
   function botAI(){
     // Get random number from [0,2,6,8]
     var corners = [0,2,6,8];
@@ -219,48 +209,17 @@ app.controller("MainController", function($scope, $firebase){
       fatalBlow = [];
     }
 
-    if (gameBoard.length == 1 && playerOneMoves[0] == 4)
-    {
-      // $("#" + randMove).html("<span>O</span>");
-      // botMoves.push(randMove);
-      // gameBoard.push(randMove);
-      // displayStatus("France's Turn");
-      pushData(randMove);
-    }
-    else if (gameBoard.length == 1 && playerOneMoves[0] != 4)
-    {
-      // $("#4").html("<span>O</span>");
-      // botMoves.push(4);
-      // gameBoard.push(4);
-      // displayStatus("France's Turn");
-      pushData(4);
-    }
+    if (gameBoard.length == 1)
+      areaTaken(4) ? pushData(randMove) : pushData(4);
     else if (gameBoard.length >= 3 && playerOneMoves.length < 5)
     {
       calculateBotMove(playerOneMoves, botMoves);
       if (fatalBlow.length == 1 && !isNaN(fatalBlow))
-      {
-        // TODO: Using pushData breaks this
-        // $("#" + fatalBlow[0]).html("<span>O</span>");
-        // botMoves.push(fatalBlow[0]);
-        // gameBoard.push(fatalBlow[0]);
-        // displayStatus("France's Turn");
-        // fatalBlow = [];
-
         pushData(fatalBlow);
-        // fatalBlow = [];
-      }
       else
       {
         botMoveChecker(winCondition, botMoves, true);
-        // $("#" + fatalBlow).html("<span>O</span>");
-        // botMoves.push(fatalBlow);
-        // gameBoard.push(fatalBlow);
-        // displayStatus("france's Turn");
-        // fatalBlow = [];
-
         pushData(fatalBlow);
-        // fatalBlow = [];
       }
     }
   };
