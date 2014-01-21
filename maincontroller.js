@@ -180,6 +180,8 @@ app.controller("MainController", function($scope, $firebase){
         console.log("winningMove: " + winningMove);
         console.log("WinningComb: " + winningComb);
         var bestMove = Math.max(testV, testV2);
+        if (testV == testV2)
+          bestMove = winningMove[1];
         if (bestMove == testV && occupiedTerritory(winningComb) && !occupiedTerritory(winningMove[1]))
         {
           if (!occupiedTerritory(winningMove[0]))
