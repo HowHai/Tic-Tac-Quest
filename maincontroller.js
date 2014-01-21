@@ -44,8 +44,8 @@ app.controller("MainController", function($scope, $firebase){
     botMode = false;
     playerMode = false;
     $("#message-box").show();
-    $scope.restartGame();
     displayStatus("Main Menu");
+    $scope.restartGame();
   };
 
   $scope.restartGame = function(){
@@ -119,12 +119,13 @@ app.controller("MainController", function($scope, $firebase){
         // setTimeout(function() { botAI(); }, 2000);
         botAI();
       }
+      // Remove this and uncomment 96-97 to resume player vs player
     }
     else if (!areaTaken && !gameOver && playerMode)
       playerAction(playerTwoMoves, "France's Turn");
 
     winCheck(winCondition, playerOneMoves, "France won!");
-    winCheck(winCondition, playerTwoMoves, "Holland won!");
+    // winCheck(winCondition, playerTwoMoves, "Holland won!");
     winCheck(winCondition, botMoves, "Holland won!");
   };
 
@@ -149,6 +150,7 @@ app.controller("MainController", function($scope, $firebase){
   };
 
 
+  // AI MADNESSSSS
   // TODO: fix bot's third move when player
   // Calculate bot's move by using player, bot, and windCondition
   function botMoveChecker(winCondition, player, decision){
@@ -172,9 +174,16 @@ app.controller("MainController", function($scope, $firebase){
       if (decision && winningComb.length == 1)
       {
         var testV = Math.abs(botMoves.last() - winningMove[0]);
+        console.log("testV: " + testV);
         var testV2 = Math.abs(botMoves.last() - winningMove[1]);
-        var moveToTake = testV > testV2 ? winningMove[0] : winningMove[1];
+        console.log("testV2: " + testV2);
+        console.log("Last Move: " + botMoves.last());
+        console.log("winningMove: " + winningMove);
+        console.log("WinningComb: " + winningComb);
 
+        var moveToTake = testV > testV2 ? winningMove[0] : winningMove[1];
+        console.log("MoveToTake: " + moveToTake);
+        console.log(botMoves);
         if (areaTaken(winningComb) && !areaTaken(winningMove[0]) && !areaTaken(winningMove[1]))
         {
           fatalBlow = moveToTake;
@@ -195,13 +204,10 @@ app.controller("MainController", function($scope, $firebase){
       botMoveChecker(winCondition, player);
   };
 
+  // AI MADNESS
   function botAI(){
     // Get random number from [0,2,6,8]
-    var corners = [0,2,6,8];
-    var randMove = corners[Math.floor(Math.random() * corners.length)];
-
-    function pushData(data)
-    {
+    function pushData(data){
       $("#" + data).html("<span>O</span>");
       botMoves.push(data);
       gameBoard.push(data);
@@ -209,13 +215,24 @@ app.controller("MainController", function($scope, $firebase){
       fatalBlow = [];
     }
 
-    if (gameBoard.length == 1)
-      areaTaken(4) ? pushData(randMove) : pushData(4);
-    else if (gameBoard.length >= 3 && playerOneMoves.length < 5)
+    var secondMoveArray = [0,2,6,8];
+    var randMove = secondMoveArray[Math.floor(Math.random() * secondMoveArray.length)];
+
+    if (gameBoard.length == 1 && playerOneMoves[0] == 4)
+    {
+      // $("#" + randMove).html("<span>O</span>");
+      // botMoves.push(randMove);
+      // gameBoard.push(randMove);
+      // displayStatus("France's Turn");
+      pushData(randMove);
+    }
+    else if (gameBoard.length == 1 && playerOneMoves[0] != 4)
+      pushData(4);
+    else if (playerOneMoves.length < 5)
     {
       calculateBotMove(playerOneMoves, botMoves);
       if (fatalBlow.length == 1 && !isNaN(fatalBlow))
-        pushData(fatalBlow);
+        pushData(fatalBlow[0]);
       else
       {
         botMoveChecker(winCondition, botMoves, true);
