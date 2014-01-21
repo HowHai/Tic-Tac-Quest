@@ -207,44 +207,54 @@ app.controller("MainController", function($scope, $firebase){
   // AI MADNESS
   function botAI(){
     // Get random number from [0,2,6,8]
+    function pushData(data){
+      $("#" + data).html("<span>O</span>");
+      botMoves.push(data);
+      gameBoard.push(data);
+      displayStatus("France's Turn");
+      fatalBlow = [];
+    }
+
     var secondMoveArray = [0,2,6,8];
     var randMove = secondMoveArray[Math.floor(Math.random() * secondMoveArray.length)];
 
     if (gameBoard.length == 1 && playerOneMoves[0] == 4)
     {
-      $("#" + randMove).html("<span>O</span>");
-      botMoves.push(randMove);
-      gameBoard.push(randMove);
-      displayStatus("France's Turn");
+      // $("#" + randMove).html("<span>O</span>");
+      // botMoves.push(randMove);
+      // gameBoard.push(randMove);
+      // displayStatus("France's Turn");
+      pushData(randMove);
     }
     else if (gameBoard.length == 1 && playerOneMoves[0] != 4)
     {
-      $("#4").html("<span>O</span>");
-      botMoves.push(4);
-      gameBoard.push(4);
-      displayStatus("France's Turn");
+      // $("#4").html("<span>O</span>");
+      // botMoves.push(4);
+      // gameBoard.push(4);
+      // displayStatus("France's Turn");
+      pushData(4)
     }
-    else if (gameBoard.length >= 3 && playerOneMoves.length <= 5)
+    else if (playerOneMoves.length < 5)
     {
       calculateBotMove(playerOneMoves, botMoves);
       if (fatalBlow.length == 1 && !isNaN(fatalBlow))
       {
-        $("#" + fatalBlow[0]).html("<span>O</span>");
-        botMoves.push(fatalBlow[0]);
-        gameBoard.push(fatalBlow[0]);
-        displayStatus("France's Turn");
-        fatalBlow = [];
+        // $("#" + fatalBlow[0]).html("<span>O</span>");
+        // botMoves.push(fatalBlow[0]);
+        // gameBoard.push(fatalBlow[0]);
+        // displayStatus("France's Turn");
+        // fatalBlow = [];
+        pushData(fatalBlow);
       }
       else
       {
         botMoveChecker(winCondition, botMoves, true);
-        $("#" + fatalBlow).html("<span>O</span>");
-        botMoves.push(fatalBlow);
-        gameBoard.push(fatalBlow);
-        displayStatus("france's Turn");
-        // console.log("This is running!");
-        // console.log(fatalBlow);
-        fatalBlow = [];
+        // $("#" + fatalBlow).html("<span>O</span>");
+        // botMoves.push(fatalBlow);
+        // gameBoard.push(fatalBlow);
+        // displayStatus("france's Turn");
+        // fatalBlow = [];
+        pushData(fatalBlow);
       }
       // winCheck(winCondition, botMoves, "Holland won!");
     }
