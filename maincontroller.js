@@ -92,6 +92,12 @@ app.controller("MainController", function($scope, $firebase){
     }
   };
 
+  // Return true if area is taken
+  function areaTaken(territory){
+    var getTerritory = $("#" + territory).html();
+    return isNaN(getTerritory);
+  };
+
   $scope.selectedTerritory = function(selected){
     var getDiv = $("#" + selected);
     var areaTaken = isNaN(getDiv.html());
@@ -120,6 +126,7 @@ app.controller("MainController", function($scope, $firebase){
 
     winCheck(winCondition, playerOneMoves, "France won!");
     winCheck(winCondition, playerTwoMoves, "Holland won!");
+    winCheck(winCondition, botMoves, "Holland won!");
   };
 
   function winCheck(winCondition, playerMoves, message) {
@@ -142,11 +149,7 @@ app.controller("MainController", function($scope, $firebase){
     }
   };
 
-  // Return true if territory is occupied
-  function areaTaken(territory){
-    var getTerritory = $("#" + territory).html();
-    return isNaN(getTerritory);
-  };
+
   // AI MADNESSSSS
   // TODO: fix bot's third move when player
   // Calculate bot's move by using player, bot, and windCondition
@@ -167,36 +170,27 @@ app.controller("MainController", function($scope, $firebase){
         break;
       }
 
+      // Decision is true when player makes trap/odd moves
       if (decision && winningComb.length == 1)
       {
         var testV = Math.abs(botMoves.last() - winningMove[0]);
-        // console.log("testV: " + testV);
+        console.log("testV: " + testV);
         var testV2 = Math.abs(botMoves.last() - winningMove[1]);
-        // console.log("testV2: " + testV2);
-        // console.log("Last Move: " + botMoves.last());
-        // console.log("winningMove: " + winningMove);
-        // console.log("WinningComb: " + winningComb);
-        var bestMove = Math.max(testV, testV2);
-        if (testV == testV2)
-          bestMove = winningMove[1];
-        if (bestMove == testV && areaTaken(winningComb) && !areaTaken(winningMove[1]))
+        console.log("testV2: " + testV2);
+        console.log("Last Move: " + botMoves.last());
+        console.log("winningMove: " + winningMove);
+        console.log("WinningComb: " + winningComb);
+
+        var moveToTake = testV > testV2 ? winningMove[0] : winningMove[1];
+        console.log("MoveToTake: " + moveToTake);
+
+        if (areaTaken(winningComb) && !areaTaken(winningMove[0]) && !areaTaken(winningMove[1]))
         {
-          if (!areaTaken(winningMove[0]))
-          {
-            var bestMoveEver = winningMove[0];
-            fatalBlow = bestMoveEver;
-            break;
-          }
+          fatalBlow = moveToTake;
+          break;
         }
-        else if (!areaTaken(winningMove[1]) && areaTaken(winningComb) && !areaTaken(winningMove[0]))
-        {
-           var bestMoveEver = winningMove[1];
-           fatalBlow = bestMoveEver;
-           console.log(fatalBlow);
-           console.log("This ran");
-           break;
-        }
-        // console.log("This ran!");
+        else if (areaTaken(winningMove[0]) && areaTaken(winningMove[1]))
+          fatalBlow = areaTaken(3) ? 1 : 3
       }
     }
   };
@@ -205,6 +199,7 @@ app.controller("MainController", function($scope, $firebase){
     // Make winning move if available
     botMoveChecker(winCondition, bot);
 
+    // Bot reacts to player's move
     if (fatalBlow.length == 0)
       botMoveChecker(winCondition, player);
   };
@@ -220,7 +215,6 @@ app.controller("MainController", function($scope, $firebase){
       $("#" + randMove).html("<span>O</span>");
       botMoves.push(randMove);
       gameBoard.push(randMove);
-      $("#turn-box").html("Haiii");
       displayStatus("France's Turn");
     }
     else if (gameBoard.length == 1 && playerOneMoves[0] != 4)
@@ -230,7 +224,7 @@ app.controller("MainController", function($scope, $firebase){
       gameBoard.push(4);
       displayStatus("France's Turn");
     }
-    else if (gameBoard.length >= 3)
+    else if (gameBoard.length >= 3 && playerOneMoves.length <= 5)
     {
       calculateBotMove(playerOneMoves, botMoves);
       if (fatalBlow.length == 1 && !isNaN(fatalBlow))
@@ -252,7 +246,7 @@ app.controller("MainController", function($scope, $firebase){
         // console.log(fatalBlow);
         fatalBlow = [];
       }
+      // winCheck(winCondition, botMoves, "Holland won!");
     }
-    winCheck(winCondition, botMoves, "Holland won!");
   };
 });
