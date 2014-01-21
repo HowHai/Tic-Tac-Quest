@@ -1,8 +1,4 @@
 app.controller("MainController", function($scope, $firebase){
-  // https://burning-fire-9970.firebaseio.com/
-
-// var ref = new FireBase("https://burning-fire-9970.firebaseio.com/");
-
   // define Array.last()
   Array.prototype.last = function(){
     return this[this.length -1];
@@ -61,6 +57,7 @@ app.controller("MainController", function($scope, $firebase){
     gameOver = false;
 
     // Replaces all Xs and Os with starting numbers
+    // TODO: don't need a loop for this dude...
     var boardArray = [0,1,2,3,4,5,6,7,8];
     for (var i = 0; i < boardArray.length; i++){
       var getTerritory = $("#" + i);
@@ -177,11 +174,13 @@ app.controller("MainController", function($scope, $firebase){
       if (decision && winningComb.length == 1)
       {
         var testV = Math.abs(botMoves.last() - winningMove[0]);
+        console.log("testV: " + testV);
         var testV2 = Math.abs(botMoves.last() - winningMove[1]);
+        console.log("testV2: " + testV2);
         console.log("winningMove: " + winningMove);
         console.log("WinningComb: " + winningComb);
         var bestMove = Math.max(testV, testV2);
-        if (bestMove == testV && !occupiedTerritory(winningComb))
+        if (bestMove == testV && occupiedTerritory(winningComb) && !occupiedTerritory(winningMove[1]))
         {
           if (!occupiedTerritory(winningMove[0]))
           {
@@ -191,11 +190,12 @@ app.controller("MainController", function($scope, $firebase){
             break;
           }
         }
-        else if (!occupiedTerritory(winningMove[1]) && occupiedTerritory(winningComb))
+        else if (!occupiedTerritory(winningMove[1]) && occupiedTerritory(winningComb) && !occupiedTerritory(winningMove[0]))
         {
            var bestMoveEver = winningMove[1];
            fatalBlow = bestMoveEver;
            console.log(fatalBlow);
+           console.log("This ran");
            break;
         }
         // console.log("This ran!");
