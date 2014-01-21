@@ -89,16 +89,12 @@ app.controller("MainController", function($scope, $firebase){
         displayStatus("France's Turn");
       else if (gameBoard.length != 0)
         displayStatus("Holland's Turn");
-
-      console.log(lastMove);
-      console.log(gameBoard);
-      console.log(playerOneMoves);
     }
   };
 
   $scope.selectedTerritory = function(selected){
     var getDiv = $("#" + selected);
-    var occupiedTerritory = isNaN(getDiv.html());
+    var areaTaken = isNaN(getDiv.html());
     var XorO = gameBoard.length % 2 == 0 ? "X" : "O";
 
     function playerAction(player, turn){
@@ -108,17 +104,18 @@ app.controller("MainController", function($scope, $firebase){
       displayStatus(turn);
     };
 
-    if (XorO == 'X' && !occupiedTerritory && !gameOver)
+    if (XorO == 'X' && !areaTaken && !gameOver)
     {
       playerAction(playerOneMoves, "Holland's Turn");
       if (botMode)
       {
         displayStatus("Holland is thinking...");
-        setTimeout(function() { botAI(); }, 2000);
+        // setTimeout(function() { botAI(); }, 2000);
+        botAI();
       }
       // Remove this and uncomment 96-97 to resume player vs player
     }
-    else if (!occupiedTerritory && !gameOver && playerMode)
+    else if (!areaTaken && !gameOver && playerMode)
       playerAction(playerTwoMoves, "France's Turn");
 
     winCheck(winCondition, playerOneMoves, "France won!");
@@ -146,7 +143,7 @@ app.controller("MainController", function($scope, $firebase){
   };
 
   // Return true if territory is occupied
-  function occupiedTerritory(territory){
+  function areaTaken(territory){
     var getTerritory = $("#" + territory).html();
     return isNaN(getTerritory);
   };
@@ -164,35 +161,34 @@ app.controller("MainController", function($scope, $firebase){
         return player.indexOf(value) == -1;
       })
 
-      if (winningComb.length == 2 && !occupiedTerritory(winningMove))
+      if (winningComb.length == 2 && !areaTaken(winningMove))
       {
         return fatalBlow = winningMove;
-        console.log("sad face");
         break;
       }
 
       if (decision && winningComb.length == 1)
       {
         var testV = Math.abs(botMoves.last() - winningMove[0]);
-        console.log("testV: " + testV);
+        // console.log("testV: " + testV);
         var testV2 = Math.abs(botMoves.last() - winningMove[1]);
-        console.log("testV2: " + testV2);
-        console.log("winningMove: " + winningMove);
-        console.log("WinningComb: " + winningComb);
+        // console.log("testV2: " + testV2);
+        // console.log("Last Move: " + botMoves.last());
+        // console.log("winningMove: " + winningMove);
+        // console.log("WinningComb: " + winningComb);
         var bestMove = Math.max(testV, testV2);
         if (testV == testV2)
           bestMove = winningMove[1];
-        if (bestMove == testV && occupiedTerritory(winningComb) && !occupiedTerritory(winningMove[1]))
+        if (bestMove == testV && areaTaken(winningComb) && !areaTaken(winningMove[1]))
         {
-          if (!occupiedTerritory(winningMove[0]))
+          if (!areaTaken(winningMove[0]))
           {
             var bestMoveEver = winningMove[0];
             fatalBlow = bestMoveEver;
-            console.log(winningMove[0]);
             break;
           }
         }
-        else if (!occupiedTerritory(winningMove[1]) && occupiedTerritory(winningComb) && !occupiedTerritory(winningMove[0]))
+        else if (!areaTaken(winningMove[1]) && areaTaken(winningComb) && !areaTaken(winningMove[0]))
         {
            var bestMoveEver = winningMove[1];
            fatalBlow = bestMoveEver;
