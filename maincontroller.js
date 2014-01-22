@@ -149,9 +149,6 @@ app.controller("MainController", function($scope, $firebase){
     }
   };
 
-
-  // AI MADNESSSSS
-  // TODO: fix bot's third move when player
   // Calculate bot's move by using player, bot, and windCondition
   function botMoveChecker(winCondition, player, decision){
     for (var i = 0; i < winCondition.length; i++)
@@ -173,20 +170,14 @@ app.controller("MainController", function($scope, $firebase){
       // Decision is true when player makes trap/odd moves
       if (decision && winningComb.length == 1)
       {
-        var testV = Math.abs(botMoves.last() - winningMove[0]);
-        console.log("testV: " + testV);
-        var testV2 = Math.abs(botMoves.last() - winningMove[1]);
-        console.log("testV2: " + testV2);
-        console.log("Last Move: " + botMoves.last());
-        console.log("winningMove: " + winningMove);
-        console.log("WinningComb: " + winningComb);
+        var moveOne = Math.abs(botMoves.last() - winningMove[0]);
+        var moveTwo = Math.abs(botMoves.last() - winningMove[1]);
 
-        var moveToTake = testV > testV2 ? winningMove[0] : winningMove[1];
-        console.log("MoveToTake: " + moveToTake);
-        console.log(botMoves);
+        var moveToTake = moveOne > moveTwo ? winningMove[0] : winningMove[1];
         if (areaTaken(winningComb) && !areaTaken(winningMove[0]) && !areaTaken(winningMove[1]))
         {
-          fatalBlow = moveToTake;
+          // Hacky solution to bot's only weakness
+          fatalBlow = (areaTaken(1) && areaTaken(8) && gameBoard.length == 5) ? 6 : moveToTake;
           break;
         }
         else if (areaTaken(winningMove[0]) && areaTaken(winningMove[1]))
@@ -206,7 +197,6 @@ app.controller("MainController", function($scope, $firebase){
 
   // AI MADNESS
   function botAI(){
-    // Get random number from [0,2,6,8]
     function pushData(data){
       $("#" + data).html("<span>O</span>");
       botMoves.push(data);
@@ -215,19 +205,11 @@ app.controller("MainController", function($scope, $firebase){
       fatalBlow = [];
     }
 
-    var secondMoveArray = [0,2,6,8];
-    var randMove = secondMoveArray[Math.floor(Math.random() * secondMoveArray.length)];
+    var randMove = [0,2,6,8][Math.floor(Math.random() * [0,2,6,8].length)];
 
-    if (gameBoard.length == 1 && playerOneMoves[0] == 4)
-    {
-      // $("#" + randMove).html("<span>O</span>");
-      // botMoves.push(randMove);
-      // gameBoard.push(randMove);
-      // displayStatus("France's Turn");
-      pushData(randMove);
-    }
-    else if (gameBoard.length == 1 && playerOneMoves[0] != 4)
-      pushData(4);
+    // Take random corner if center is taken on first move
+    if (gameBoard.length == 1)
+      areaTaken(4) ? pushData(randMove) : pushData(4);
     else if (playerOneMoves.length < 5)
     {
       calculateBotMove(playerOneMoves, botMoves);
