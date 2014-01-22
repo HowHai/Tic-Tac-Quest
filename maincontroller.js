@@ -149,6 +149,9 @@ app.controller("MainController", function($scope, $firebase){
     }
   };
 
+  // AI MADNESSSSSS BELOWWWWW!!!@#!@
+  // GO BACK NOWWWW!!!
+  // BEEP BEEP BEEP!!!
   // Calculate bot's move by using player, bot, and windCondition
   function botMoveChecker(winCondition, player, decision){
     for (var i = 0; i < winCondition.length; i++)
