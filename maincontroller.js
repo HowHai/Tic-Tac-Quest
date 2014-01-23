@@ -115,17 +115,16 @@ app.controller("MainController", function($scope, $firebase){
       playerAction(playerOneMoves, "Holland's Turn");
       if (botMode)
       {
+        // TODO: Require another click to show victory when timer used
+        setTimeout(function() { botAI(); }, 2000);
         displayStatus("Holland is thinking...");
-        // setTimeout(function() { botAI(); }, 2000);
-        botAI();
       }
-      // Remove this and uncomment 96-97 to resume player vs player
     }
     else if (!areaTaken && !gameOver && playerMode)
       playerAction(playerTwoMoves, "France's Turn");
 
     winCheck(winCondition, playerOneMoves, "France won!");
-    // winCheck(winCondition, playerTwoMoves, "Holland won!");
+    winCheck(winCondition, playerTwoMoves, "Holland won!");
     winCheck(winCondition, botMoves, "Holland won!");
   };
 
@@ -153,6 +152,7 @@ app.controller("MainController", function($scope, $firebase){
   // GO BACK NOWWWW!!!
   // BEEP BEEP BEEP!!!
   // Calculate bot's move by using player, bot, and windCondition
+  // TODO: Remove all winCondition... do not need.
   function botMoveChecker(winCondition, player, decision){
     for (var i = 0; i < winCondition.length; i++)
     {
@@ -200,6 +200,12 @@ app.controller("MainController", function($scope, $firebase){
 
   // AI MADNESS
   function botAI(){
+
+
+
+
+
+
     function pushData(data){
       $("#" + data).html("<span>O</span>");
       botMoves.push(data);
