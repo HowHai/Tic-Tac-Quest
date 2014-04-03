@@ -200,12 +200,6 @@ app.controller("MainController", function($scope, $firebase){
 
   // AI MADNESS
   function botAI(){
-
-
-
-
-
-
     function pushData(data){
       $("#" + data).html("<span>O</span>");
       botMoves.push(data);
